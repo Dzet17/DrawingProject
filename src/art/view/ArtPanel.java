@@ -54,7 +54,7 @@ public class ArtPanel extends JPanel
 		scaleSlider = new JSlider(MINIMUM_SCALE, MAXIMUM_SCALE);
 		edgeSlider = new JSlider(MINIMUM_EDGE, MAXIMUM_EDGE);
 		
-		canvas = new ShapeCanvas();
+		canvas = new ShapeCanvas(app);
 		sliderPanel = new JPanel();
 		buttonPanel = new JPanel(new GridLayout(0, 1));
 		appLayout.putConstraint(SpringLayout.NORTH, buttonPanel, 0, SpringLayout.NORTH, this);
@@ -130,7 +130,26 @@ public class ArtPanel extends JPanel
 	
 	private boolean coinFlip()
 	{
+		return (int) (Math.random() * 2) == 0;
+	}
+	
+	private Polygon createPolygon(int sides)
+	{
+		Polygon currentShape = new Polygon();
 		
+		int originX = (int) (Math.random() * 600);
+		int originY = (int) (Math.random() * 600);
+		
+		for (int index = 0; index < sides; index++)
+		{
+			int minus = coinFlip() ? -1 : 1;
+			int shiftX = (int) (Math.random() * currentScale) * minus;
+			minus = coinFlip() ? -1 : 1;
+			int shiftY = (int) (Math.random() * currentScale) * minus;
+			currentShape.addPoint(originX, shiftX, originY + shiftY);
+		}
+		
+		return currentShape;
 	}
 	
 	private void setupListeners()
